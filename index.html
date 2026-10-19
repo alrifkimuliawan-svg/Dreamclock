@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172033">
+<meta name="description" content="DreamClock — jam digital aesthetic dengan wallpaper pilihanmu.">
+<link rel="manifest" href="manifest.webmanifest">
+<title>DreamClock</title>
+<style>
+:root{color-scheme:dark;--ink:#fff;--glass:rgba(12,18,32,.43);--line:rgba(255,255,255,.2)}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:#111827;min-height:100svh}
+#wallpaper{position:fixed;inset:0;background:linear-gradient(145deg,#354d73,#b99eae,#f1d8bd);background-size:cover;background-position:center;z-index:-2;transition:background-image .25s}
+#shade{position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.14),rgba(0,0,0,.4));z-index:-1}
+main{width:min(100%,620px);margin:auto;padding:calc(20px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));min-height:100svh;display:flex;flex-direction:column;gap:18px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:21px;font-weight:700;letter-spacing:-.5px}.sub{font-size:12px;opacity:.8;margin-top:2px}
+button,.upload{font:inherit;color:white;background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:11px 14px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+button:active,.upload:active{transform:scale(.98)}.hero{flex:1;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 4px}
+.greeting{font-size:12px;letter-spacing:.25em;text-transform:uppercase;margin-bottom:18px}.clock{font-size:clamp(56px,15vw,94px);font-weight:300;letter-spacing:-.065em;font-variant-numeric:tabular-nums;line-height:1.1;text-shadow:0 3px 25px #0004}.date{font-size:14px;margin-top:13px;text-shadow:0 2px 12px #0005}.quote{font-size:13px;margin-top:35px;opacity:.95}
+.panel{border:1px solid var(--line);border-radius:20px;padding:16px;background:rgba(10,15,28,.28);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+h2{font-size:14px;margin:0 0 12px;font-weight:650}.themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.theme{height:78px;border-radius:13px;border:2px solid transparent;position:relative;overflow:hidden;background-size:cover;background-position:center;padding:0}.theme[aria-pressed=true]{border-color:white;box-shadow:0 0 0 2px rgba(255,255,255,.28)}.theme span{position:absolute;bottom:5px;left:4px;right:4px;font-size:11px;text-shadow:0 1px 6px #000;font-weight:650}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.upload{display:inline-flex;align-items:center;gap:7px}.upload input{display:none}.note{font-size:11px;opacity:.75;line-height:1.5;margin-top:10px}.footer{text-align:center;font-size:11px;opacity:.7}
+@media(min-height:800px){.hero{min-height:370px}}
+</style>
+</head>
+<body>
+<div id="wallpaper"></div><div id="shade"></div>
+<main>
+<header><div><div class="brand">DreamClock ☁️</div><div class="sub">a little moment of peace</div></div><button id="format" type="button">24 jam</button></header>
+<section class="hero" aria-label="Jam digital">
+<div id="greeting" class="greeting">take it slow</div>
+<div id="clock" class="clock">00:00:00</div>
+<div id="date" class="date">Memuat tanggal…</div>
+<div id="quote" class="quote">✦ You deserve a quiet moment ✦</div>
+</section>
+<section class="panel">
+<h2>🎨 Pilih wallpaper</h2>
+<div class="themes" id="themes">
+<button class="theme" data-theme="0" aria-pressed="true" style="background-image:linear-gradient(140deg,#374e73,#ba9ba9,#f1d7bc)"><span>Dreamy sky</span></button>
+<button class="theme" data-theme="1" aria-pressed="false" style="background-image:linear-gradient(150deg,#111827,#354d5c,#b3c7c5)"><span>Midnight</span></button>
+<button class="theme" data-theme="2" aria-pressed="false" style="background-image:linear-gradient(140deg,#df9cae,#f4c9c7,#b77c8b)"><span>Sakura</span></button>
+<button class="theme" data-theme="3" aria-pressed="false" style="background-image:linear-gradient(150deg,#082c38,#207a79,#b3cbb0)"><span>Forest</span></button>
+<button class="theme" data-theme="4" aria-pressed="false" style="background-image:linear-gradient(140deg,#efbd79,#d87558,#634d68)"><span>Sunset</span></button>
+<button class="theme" data-theme="5" aria-pressed="false" style="background-image:linear-gradient(140deg,#c2d7e9,#f2e9e0,#a5b8ce)"><span>Soft blue</span></button>
+</div>
+<div class="actions">
+<label class="upload">🖼️ Foto sendiri<input id="photo" type="file" accept="image/*"></label>
+<button id="reset" type="button">↺ Reset</button>
+</div>
+<div class="note">Pilih foto dari galeri. Wallpaper pilihan disimpan di browser perangkat ini. Untuk menjaga ruang penyimpanan, gunakan foto berukuran di bawah 5 MB.</div>
+</section>
+<section class="panel"><h2>🌙 Pesan kecil buat kamu</h2><div id="message" style="font-size:13px;line-height:1.55">Nggak harus menyelesaikan semuanya sekaligus. Pelan-pelan juga nggak apa-apa.</div><div class="actions"><button id="newMessage" type="button">Pesan baru ✨</button></div></section>
+<div class="footer">Made with a little warmth ♡</div>
+</main>
+<script>
+(()=> {
+const $=s=>document.querySelector(s), wall=$('#wallpaper'), clock=$('#clock');
+const themes=[
+['linear-gradient(140deg,#374e73,#ba9ba9,#f1d7bc)','✦ You deserve a quiet moment ✦'],
+['linear-gradient(150deg,#111827,#354d5c,#b3c7c5)','☾ Let the night hold your worries'],
+['linear-gradient(140deg,#df9cae,#f4c9c7,#b77c8b)','🌸 There is beauty in beginning again'],
+['linear-gradient(150deg,#082c38,#207a79,#b3cbb0)','🌿 Grow at your own pace'],
+['linear-gradient(140deg,#efbd79,#d87558,#634d68)','☀️ Every sunset makes room for dawn'],
+['linear-gradient(140deg,#c2d7e9,#f2e9e0,#a5b8ce)','☁️ Breathe. You are doing okay']
+];
+const messages=['Nggak harus menyelesaikan semuanya sekaligus. Pelan-pelan juga nggak apa-apa.','Hari ini boleh melelahkan. Istirahat juga bagian dari perjalanan.','Satu langkah kecil tetaplah sebuah kemajuan.','Jangan lupa kasih dirimu sedikit ruang untuk bernapas.','Semoga ada hal kecil yang bikin kamu tersenyum hari ini.'];
+let is24=true, objectUrl=null;
+function tick(){const n=new Date();clock.textContent=new Intl.DateTimeFormat('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:!is24}).format(n);$('#date').textContent=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(n);let h=n.getHours();$('#greeting').textContent=h<11?'good morning ☀️':h<15?'enjoy your day ✿':h<18?'golden hour ✨':'take it slow ☾'}
+function applyTheme(i,save=true){if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}wall.style.backgroundImage=themes[i][0];$('#quote').textContent=themes[i][1];$('#themes').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.theme===i)));if(save){try{localStorage.setItem('dreamclock-theme',String(i));localStorage.removeItem('dreamclock-photo')}catch(e){}}}
+$('#themes').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>applyTheme(+b.dataset.theme)));
+$('#format').addEventListener('click',()=>{is24=!is24;$('#format').textContent=is24?'24 jam':'12 jam';tick()});
+$('#photo').addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/'))return;if(f.size>5*1024*1024){$('#message').textContent='Foto terlalu besar, bub. Coba pilih foto di bawah 5 MB ya.';e.target.value='';return}
+const reader=new FileReader();reader.onload=()=>{try{localStorage.setItem('dreamclock-photo',reader.result);localStorage.removeItem('dreamclock-theme');wall.style.backgroundImage=`url("${reader.result}")`;$('#quote').textContent='✦ your own little world ✦';$('#themes').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'))}catch(err){$('#message').textContent='Penyimpanan penuh. Coba foto yang lebih kecil ya.'}};reader.readAsDataURL(f)});
+$('#reset').addEventListener('click',()=>{applyTheme(0);$('#message').textContent=messages[0]});
+$('#newMessage').addEventListener('click',()=>{let m=$('#message').textContent,n=m;while(n===m)n=messages[Math.floor(Math.random()*messages.length)];$('#message').textContent=n});
+try{const p=localStorage.getItem('dreamclock-photo'),t=localStorage.getItem('dreamclock-theme');if(p){wall.style.backgroundImage=`url("${p}")`;$('#quote').textContent='✦ your own little world ✦';$('#themes').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','false'))}else if(t!==null)applyTheme(Math.max(0,Math.min(5,+t)),false)}catch(e){}
+tick();setInterval(tick,1000);
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+})();
+</script>
+</body></html>
